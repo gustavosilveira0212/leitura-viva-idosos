@@ -49,9 +49,13 @@ Ou seja, ele simula a lógica de um sistema real, mas de forma simplificada e em
 O projeto foi dividido de forma simples para facilitar o entendimento:
 
 /src
+
 │
+
 ├── principal
+
 │ └── Program.java
+
 │      └── Responsável pela execução do programa e menu principal
 
 ### 📌 Organização lógica
