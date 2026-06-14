@@ -91,7 +91,8 @@ public class Program {
                             codigoLivro,
                             tituloLivro,
                             qtdLivros);
-                    salvarEmprestimos(codigoEmprestimo, idosoEmprestimo, livroEmprestimo, dataEmprestimo, qtdEmprestimos);
+                    salvarEmprestimos(codigoEmprestimo, idosoEmprestimo, livroEmprestimo, dataEmprestimo,
+                            qtdEmprestimos);
                     break;
 
                 case 3:
@@ -138,10 +139,12 @@ public class Program {
             int qtdLivros) {
 
         System.out.println("\n=== CADASTROS ===");
-        System.out.println("[1] Idosos");
-        System.out.println("[2] Livros");
+        System.out.println("[1] Cadastrar Idosos");
+        System.out.println("[2] Cadastrar Livros");
+        System.out.println("[3] Alterar Idoso");
+        System.out.println("[4] Excluir Idoso");
         System.out.println("[0] Voltar");
-        
+
         System.out.print("Escolha: ");
 
         int op = leitor.nextInt();
@@ -153,7 +156,16 @@ public class Program {
                 break;
 
             case 2:
-                qtdLivros = cadastrarLivro(leitor, codigoLivro, tituloLivro, autorLivro, categoriaLivro, paginasLivro, qtdLivros);
+                qtdLivros = cadastrarLivro(leitor, codigoLivro, tituloLivro, autorLivro, categoriaLivro, paginasLivro,
+                        qtdLivros);
+                break;
+
+            case 3:
+                alterarIdoso(leitor, codigoIdoso, nomeIdoso, idadeIdoso, telefoneIdoso, qtdIdosos);
+                break;
+
+            case 4:
+                qtdIdosos = excluirIdoso(leitor, codigoIdoso, nomeIdoso, idadeIdoso, telefoneIdoso, qtdIdosos);
                 break;
         }
 
@@ -241,6 +253,85 @@ public class Program {
         return qtdIdosos;
     }
 
+    private static void alterarIdoso(Scanner leitor, int[] codigoIdoso, String[] nomeIdoso, int[] idadeIdoso,
+            String[] telefoneIdoso, int qtdIdosos) {
+
+        System.out.println("\n=== ALTERAR IDOSO ===");
+        System.out.print("Digite o código do idoso para alterar: ");
+        int codigo = leitor.nextInt();
+
+        int pos = -1;
+        for (int i = 0; i < qtdIdosos; i++) {
+            if (codigoIdoso[i] == codigo) {
+                pos = i;
+                break;
+            }
+        }
+
+        if (pos == -1) {
+            System.out.println("Idoso não encontrado.");
+            return;
+        }
+
+        leitor.nextLine();
+
+        System.out.println("Deixe em branco (ou digite 0 para idade) caso não queira alterar o campo.");
+
+        System.out.print("Novo Nome (" + nomeIdoso[pos] + "): ");
+        String novoNome = leitor.nextLine();
+        if (!novoNome.trim().isEmpty()) {
+            nomeIdoso[pos] = novoNome;
+        }
+
+        System.out.print("Nova Idade (" + idadeIdoso[pos] + "): ");
+        String novaIdadeStr = leitor.nextLine();
+        if (!novaIdadeStr.trim().isEmpty()) {
+            idadeIdoso[pos] = Integer.parseInt(novaIdadeStr);
+        }
+
+        System.out.print("Novo Telefone (" + telefoneIdoso[pos] + "): ");
+        String novoTelefone = leitor.nextLine();
+        if (!novoTelefone.trim().isEmpty()) {
+            telefoneIdoso[pos] = novoTelefone;
+        }
+
+        System.out.println("Cadastro do idoso alterado com sucesso.");
+    }
+
+    private static int excluirIdoso(Scanner leitor, int[] codigoIdoso, String[] nomeIdoso, int[] idadeIdoso,
+            String[] telefoneIdoso, int qtdIdosos) {
+
+        System.out.println("\n=== EXCLUIR IDOSO ===");
+        System.out.print("Digite o código do idoso para excluir: ");
+        int codigo = leitor.nextInt();
+
+        int pos = -1;
+
+        for (int i = 0; i < qtdIdosos; i++) {
+            if (codigoIdoso[i] == codigo) {
+                pos = i;
+                break;
+            }
+        }
+
+        if (pos == -1) {
+            System.out.println("Idoso não encontrado.");
+            return qtdIdosos;
+        }
+
+        for (int i = pos; i < qtdIdosos - 1; i++) {
+            codigoIdoso[i] = codigoIdoso[i + 1];
+            nomeIdoso[i] = nomeIdoso[i + 1];
+            idadeIdoso[i] = idadeIdoso[i + 1];
+            telefoneIdoso[i] = telefoneIdoso[i + 1];
+        }
+
+        qtdIdosos--;
+        System.out.println("Idoso excluído com sucesso.");
+
+        return qtdIdosos;
+    }
+
     public static int menuEmprestimos(
             Scanner leitor,
             int[] codigoEmprestimo,
@@ -260,7 +351,7 @@ public class Program {
         System.out.println("[2] Devolução");
         System.out.println("[3] Listar Empréstimos");
         System.out.println("[0] Voltar");
-        
+
         System.out.print("Escolha: ");
 
         int op = leitor.nextInt();
@@ -445,7 +536,7 @@ public class Program {
         System.out.println("[5] Listar todos os livros");
         System.out.println("[6] Listar todos os empréstimos");
         System.out.println("[0] Voltar");
-        
+
         System.out.println("Escolha: ");
 
         int op = leitor.nextInt();
@@ -618,11 +709,10 @@ public class Program {
         System.out.println("Título: " + tituloLivro[pos]);
         System.out.println("Autor: " + autorLivro[pos]);
         System.out.println("Categoria: " + categoriaLivro[pos]);
-     
+
         System.out.println("Páginas: " + paginasLivro[pos]);
     }
-    
-    
+
     private static void consultarEmprestimo(Scanner leitor, int[] codigoEmprestimo, int[] idosoEmprestimo,
             int[] livroEmprestimo, String[] dataEmprestimo, int qtdEmprestimos, int[] codigoIdoso, String[] nomeIdoso,
             int qtdIdosos, int[] codigoLivro, String[] tituloLivro, int qtdLivros) {
@@ -898,12 +988,10 @@ public class Program {
 
         try {
             arqSaida = new Formatter("idosos.txt");
-        }
-        catch (SecurityException securityException) {
+        } catch (SecurityException securityException) {
             System.err.println("Permissao de Escrita Negado. Fechando...");
             System.exit(1);
-        }
-        catch (FileNotFoundException fileNotFoundException) {
+        } catch (FileNotFoundException fileNotFoundException) {
             System.err.println("Erro ao abrir o arquivo. Fechando...");
             System.exit(1);
         }
@@ -918,8 +1006,7 @@ public class Program {
                         idadeIdoso[i],
                         trunc(telefoneIdoso[i], 15));
             }
-        }
-        catch (FormatterClosedException formatterClosedException) {
+        } catch (FormatterClosedException formatterClosedException) {
             System.err.println("Erro de escrita no arquivo. Finalizando...");
         }
 
@@ -933,8 +1020,7 @@ public class Program {
 
         try {
             arqEnt = new Scanner(new File("idosos.txt"));
-        }
-        catch (FileNotFoundException fileNotFoundException) {
+        } catch (FileNotFoundException fileNotFoundException) {
             return 0;
         }
 
@@ -954,14 +1040,11 @@ public class Program {
                 telefoneIdoso[qtd] = campo(linha, 44, 59);
                 qtd++;
             }
-        }
-        catch (NoSuchElementException elementException) {
+        } catch (NoSuchElementException elementException) {
             System.err.println("Arquivo idosos.txt corrompido");
-        }
-        catch (IllegalStateException stateException) {
+        } catch (IllegalStateException stateException) {
             System.err.println("Erro na leitura do arquivo idosos.txt");
-        }
-        catch (NumberFormatException numberFormatException) {
+        } catch (NumberFormatException numberFormatException) {
             System.err.println("Erro de formato no arquivo idosos.txt");
         }
 
@@ -976,16 +1059,14 @@ public class Program {
 
         try {
             arqSaida = new Formatter("livros.txt");
-        }
-        catch (SecurityException securityException) {
+        } catch (SecurityException securityException) {
             System.err.println("Permissao de Escrita Negado. Fechando...");
             System.exit(1);
-        }
-        catch (FileNotFoundException fileNotFoundException) {
+        } catch (FileNotFoundException fileNotFoundException) {
             System.err.println("Erro ao abrir o arquivo. Fechando...");
             System.exit(1);
         }
-        
+
         try {
             arqSaida.format("%-6s %-40s %-30s %-20s %-7s%n",
                     "CODIGO", "TITULO", "AUTOR", "CATEGORIA", "PAGINAS");
@@ -997,8 +1078,7 @@ public class Program {
                         trunc(categoriaLivro[i], 20),
                         paginasLivro[i]);
             }
-        }
-        catch (FormatterClosedException formatterClosedException) {
+        } catch (FormatterClosedException formatterClosedException) {
             System.err.println("Erro de escrita no arquivo. Finalizando...");
         }
 
@@ -1012,8 +1092,7 @@ public class Program {
 
         try {
             arqEnt = new Scanner(new File("livros.txt"));
-        }
-        catch (FileNotFoundException fileNotFoundException) {
+        } catch (FileNotFoundException fileNotFoundException) {
             return 0;
         }
 
@@ -1034,14 +1113,11 @@ public class Program {
                 paginasLivro[qtd] = Integer.parseInt(campo(linha, 100, 107));
                 qtd++;
             }
-        }
-        catch (NoSuchElementException elementException) {
+        } catch (NoSuchElementException elementException) {
             System.err.println("Arquivo livros.txt corrompido");
-        }
-        catch (IllegalStateException stateException) {
+        } catch (IllegalStateException stateException) {
             System.err.println("Erro na leitura do arquivo livros.txt");
-        }
-        catch (NumberFormatException numberFormatException) {
+        } catch (NumberFormatException numberFormatException) {
             System.err.println("Erro de formato no arquivo livros.txt");
         }
 
@@ -1056,12 +1132,10 @@ public class Program {
 
         try {
             arqSaida = new Formatter("emprestimos.txt");
-        }
-        catch (SecurityException securityException) {
+        } catch (SecurityException securityException) {
             System.err.println("Permissao de Escrita Negado. Fechando...");
             System.exit(1);
-        }
-        catch (FileNotFoundException fileNotFoundException) {
+        } catch (FileNotFoundException fileNotFoundException) {
             System.err.println("Erro ao abrir o arquivo. Fechando...");
             System.exit(1);
         }
@@ -1076,8 +1150,7 @@ public class Program {
                         livroEmprestimo[i],
                         trunc(dataEmprestimo[i], 12));
             }
-        }
-        catch (FormatterClosedException formatterClosedException) {
+        } catch (FormatterClosedException formatterClosedException) {
             System.err.println("Erro de escrita no arquivo. Finalizando...");
         }
 
@@ -1091,8 +1164,7 @@ public class Program {
 
         try {
             arqEnt = new Scanner(new File("emprestimos.txt"));
-        }
-        catch (FileNotFoundException fileNotFoundException) {
+        } catch (FileNotFoundException fileNotFoundException) {
             return 0;
         }
 
@@ -1112,14 +1184,11 @@ public class Program {
                 dataEmprestimo[qtd] = campo(linha, 21, 33);
                 qtd++;
             }
-        }
-        catch (NoSuchElementException elementException) {
+        } catch (NoSuchElementException elementException) {
             System.err.println("Arquivo emprestimos.txt corrompido");
-        }
-        catch (IllegalStateException stateException) {
+        } catch (IllegalStateException stateException) {
             System.err.println("Erro na leitura do arquivo emprestimos.txt");
-        }
-        catch (NumberFormatException numberFormatException) {
+        } catch (NumberFormatException numberFormatException) {
             System.err.println("Erro de formato no arquivo emprestimos.txt");
         }
 
@@ -1134,12 +1203,10 @@ public class Program {
 
         try {
             arqSaida = new Formatter("comentarios.txt");
-        }
-        catch (SecurityException securityException) {
+        } catch (SecurityException securityException) {
             System.err.println("Permissao de Escrita Negado. Fechando...");
             System.exit(1);
-        }
-        catch (FileNotFoundException fileNotFoundException) {
+        } catch (FileNotFoundException fileNotFoundException) {
             System.err.println("Erro ao abrir o arquivo. Fechando...");
             System.exit(1);
         }
@@ -1154,8 +1221,7 @@ public class Program {
                         notaLeitura[i],
                         trunc(comentarioLeitura[i], 60));
             }
-        }
-        catch (FormatterClosedException formatterClosedException) {
+        } catch (FormatterClosedException formatterClosedException) {
             System.err.println("Erro de escrita no arquivo. Finalizando...");
         }
 
@@ -1169,8 +1235,7 @@ public class Program {
 
         try {
             arqEnt = new Scanner(new File("comentarios.txt"));
-        }
-        catch (FileNotFoundException fileNotFoundException) {
+        } catch (FileNotFoundException fileNotFoundException) {
             return 0;
         }
 
@@ -1190,14 +1255,11 @@ public class Program {
                 comentarioLeitura[qtd] = campo(linha, 20, 80);
                 qtd++;
             }
-        }
-        catch (NoSuchElementException elementException) {
+        } catch (NoSuchElementException elementException) {
             System.err.println("Arquivo comentarios.txt corrompido");
-        }
-        catch (IllegalStateException stateException) {
+        } catch (IllegalStateException stateException) {
             System.err.println("Erro na leitura do arquivo comentarios.txt");
-        }
-        catch (NumberFormatException numberFormatException) {
+        } catch (NumberFormatException numberFormatException) {
             System.err.println("Erro de formato no arquivo comentarios.txt");
         }
 
