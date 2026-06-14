@@ -70,7 +70,7 @@ O projeto foi dividido de forma simples para facilitar o entendimento:
 
 ### 1. Clonar o repositório
 ```bash
-git clone https://github.com/gustavosilveira0212/leitura-viva-60-.git
+git clone https://github.com/gustavosilveira0212/leitura-viva-idosos.git
 
 2. Abrir o projeto
 
